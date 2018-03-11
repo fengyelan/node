@@ -29,10 +29,10 @@ var picSchema = new Schema({
 var picModel = mongoose.model('Pic', picSchema);
 
 //下面是一个图片网站，搜索某个特定的XX
-var q = "大雁塔";
+var q = "华山";
 var picUrl = "https://pixabay.com/zh/photos/?q=" + encodeURIComponent(q);
 
-var dir = path.join(__dirname, '/' + q + new Date().getTime());
+var dir = path.join(__dirname+'/pics', '/' + q + new Date().getTime());
 fs.mkdir(dir);
 
 superagent.get(picUrl)
@@ -67,6 +67,7 @@ superagent.get(picUrl)
  *@desc 保存图片链接和名称到数据库
  *
  */
+var i=0;
 function saveDB(title, pic_url) {
     //创建实体
     var picEntity = new picModel({
@@ -79,11 +80,14 @@ function saveDB(title, pic_url) {
         if (err) {
             return console.log(err);
         } else {
-            console.log("success");
+            i++;
+            console.log("success"+i);
         }
 
     });
 }
+
+
 
 /*
  *@desc 下载文件到本地文件夹
