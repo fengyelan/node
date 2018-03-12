@@ -69,7 +69,7 @@ var picSchema = new Schema({
 });
 
 // //创建模型
-var picDetailModel = mongoose.model('PicDetail', picSchema);
+var picDetailModel = mongoose.model('PicDetail'+q, picSchema);
 var count = 0;
 var i = 0;
 
