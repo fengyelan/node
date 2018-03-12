@@ -20,7 +20,7 @@ var Schema = mongoose.Schema;
 // //声明Schema
 var picSchema = new Schema({
     title: String,
-    url: String
+    picUrl: String
 }, {
     versionKey: false
 });
@@ -46,7 +46,18 @@ superagent.get(picUrl)
         $(".item").each(function(id, el) {
             var $el = $(el),
                 $img = $el.find("a img"),
-                pic_url = $img.attr("src"),
+                //图片使用了懒加载
+                //前面的图片标签是<img srcset="https://cdn.pixabay.com/photo/2018/03/12/00/24/nature-3218449__340.jpg 1x, https://cdn.pixabay.com/photo/2018/03/12/00/24/nature-3218449__480.jpg 2x" src="https://cdn.pixabay.com/photo/2018/03/12/00/24/nature-3218449__340.jpg" alt="自然, 植物区系, 户外, 草, 特写, 增长, 干, 夏天, 光明, 野生" title="自然, 植物区系, 户外, 草, 特写, 增长, 干, 夏天, 光明">
+                //后面的图片的src是/static/img/blank.gif，真实的图片地址是在data-lazy属性里面存折
+                //<img src="/static/img/blank.gif" data-lazy-srcset="https://cdn.pixabay.com/photo/2018/03/11/22/05/cyprus-3218163__340.jpg 1x, https://cdn.pixabay.com/photo/2018/03/11/22/05/cyprus-3218163__480.jpg 2x" data-lazy="https://cdn.pixabay.com/photo/2018/03/11/22/05/cyprus-3218163__340.jpg" alt="塞浦路斯, 拉纳卡, 的Ayios的Georgios, 结构, 拱, 宗教" title="塞浦路斯, 拉纳卡, 的Ayios的Georgios, 结构, 拱">
+                //以逗号分隔的一个或多个字符串列表表明一系列用户代理使用的可能的图像
+                //由以下组成：
+                // 一个图像的 URL。
+                // 可选的，空格后跟以下的其一：
+                // 一个宽度描述符，这是一个正整数，后面紧跟 'w' 符号。该整数宽度除以sizes属性给出的资源（source）大小来计算得到有效的像素密度，即换算成和x描述符等价的值。
+                // 一个像素密度描述符，这是一个正浮点数，后面紧跟 'x' 符号。
+                // 如果没有指定源描述符，那它会被指定为默认的 1x。
+                pic_url = $img.attr("data-lazy") || $img.attr("src"),
                 title = $img.attr("title");
 
 
